@@ -44,12 +44,11 @@ function mockCartState({
   totalItems = 3,
   totalPrice = 7050,
 } = {}) {
-  vi.mocked(useAppSelector).mockReturnValue([
-    isOpen,
-    cartItems,
-    totalItems,
-    totalPrice,
-  ]);
+  vi.mocked(useAppSelector)
+    .mockReturnValueOnce(isOpen)
+    .mockReturnValueOnce(cartItems)
+    .mockReturnValueOnce(totalItems)
+    .mockReturnValueOnce(totalPrice);
 }
 
 describe("Cart", () => {

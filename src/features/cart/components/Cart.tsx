@@ -11,18 +11,16 @@ import {
 export function Cart() {
   const dispatch = useAppDispatch();
   const { decrementItem, incrementItem, removeFromCart } = useCart();
-  const [isOpen, items, totalItems, totalPrice] = useAppSelector((state) => [
-    state.cart.isOpen,
-    selectedItems(state),
-    selectCount(state),
-    selectTotal(state),
-  ]);
+  const isOpen = useAppSelector((state) => state.cart.isOpen);
+  const items = useAppSelector(selectedItems);
+  const totalItems = useAppSelector(selectCount);
+  const totalPrice = useAppSelector(selectTotal);
 
   const hideCart = () => {
     dispatch(closeCart());
   };
 
-  return (  
+  return (
     <Activity mode={isOpen ? "visible" : "hidden"}>
       <div
         aria-hidden="true"

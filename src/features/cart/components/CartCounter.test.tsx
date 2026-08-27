@@ -15,7 +15,9 @@ vi.mock("../slice/cartSlice", () => ({
 }));
 
 function mockCartState({ isOpen = false, totalItems = 0 } = {}) {
-  vi.mocked(useAppSelector).mockReturnValue([isOpen, totalItems]);
+  vi.mocked(useAppSelector)
+    .mockReturnValueOnce(isOpen)
+    .mockReturnValueOnce(totalItems);
 }
 
 describe("CartCounter", () => {

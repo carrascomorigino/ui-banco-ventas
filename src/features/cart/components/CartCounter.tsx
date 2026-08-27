@@ -2,10 +2,8 @@ import { useAppDispatch, useAppSelector } from "../../../app/store";
 import { openCart, selectCount } from "../slice/cartSlice";
 
 export function CartCounter() {
-  const [isOpen, totalItems] = useAppSelector((state) => [
-    state.cart.isOpen,
-    selectCount(state),
-  ]);
+  const isOpen = useAppSelector((state) => state.cart.isOpen);
+  const totalItems = useAppSelector(selectCount);
   const dispatch = useAppDispatch();
 
   const showCart = () => {

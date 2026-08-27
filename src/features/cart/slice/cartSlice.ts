@@ -1,4 +1,8 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSelector,
+  createSlice,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import type { Product } from "../../catalog/types/product.types";
 import { CART_STORAGE_KEY } from "../types/cart.types";
 
@@ -69,15 +73,22 @@ export const cartSlice = createSlice({
 export const { add, decrement, increment, remove, openCart, closeCart } =
   cartSlice.actions;
 
-export const selectCount = (state: CartRootState) =>
-  Object.keys(state.cart.record).length;
-export const selectedItems = (state: CartRootState) => {
-  return Object.values(state.cart.record);
-};
+const selectCartState = (state: CartRootState) => state.cart;
 
-export const selectTotal = (state: CartRootState) =>
-  Object.values(state.cart.record).reduce(
+export const selectCount = createSelector(
+  selectCartState,
+  (cart) => Object.keys(cart.record).length,
+);
+
+export const selectedItems = createSelector(selectCartState, (cart) =>
+  Object.values(cart.record),
+);
+
+export const selectTotal = createSelector(selectCartState, (cart) =>
+  Object.values(cart.record).reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
-  );
+  ),
+);
+
 export default cartSlice.reducer;
