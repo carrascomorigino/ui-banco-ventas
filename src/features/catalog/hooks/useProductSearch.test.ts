@@ -2,14 +2,14 @@ import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import useProductSearch from "./useProductSearch";
 import { useAppDispatch } from "../../../app/store";
-import { update } from "../slice/productSearchSlice";
+import { updateTitle } from "../slice/productSearchSlice";
 
 vi.mock("../../../app/store", () => ({
   useAppDispatch: vi.fn(),
 }));
 
 vi.mock("../slice/productSearchSlice", () => ({
-  update: vi.fn((value: string) => ({
+  updateTitle: vi.fn((value: string) => ({
     type: "productSearch/update",
     payload: value,
   })),
@@ -54,9 +54,9 @@ describe("useProductSearch", () => {
       vi.advanceTimersByTime(500);
     });
 
-    expect(update).toHaveBeenCalledWith("laptop");
+    expect(updateTitle).toHaveBeenCalledWith("laptop");
     expect(dispatchMock).toHaveBeenCalledTimes(1);
-    expect(dispatchMock).toHaveBeenCalledWith(update("laptop"));
+    expect(dispatchMock).toHaveBeenCalledWith(updateTitle("laptop"));
   });
 
   it("solo despacha el último valor si se llama varias veces dentro de los 500ms", () => {
@@ -83,6 +83,6 @@ describe("useProductSearch", () => {
     });
 
     expect(dispatchMock).toHaveBeenCalledTimes(1);
-    expect(dispatchMock).toHaveBeenCalledWith(update("abc"));
+    expect(dispatchMock).toHaveBeenCalledWith(updateTitle("abc"));
   });
 });

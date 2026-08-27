@@ -10,12 +10,27 @@ import {
   type TypedUseSelectorHook,
   useSelector,
 } from "react-redux";
+import { CART_STORAGE_KEY } from "../features/cart/types/cart.types";
 
 export const store = configureStore({
   reducer: {
     cart: cartReducer,
     productSearch: productSearchReducer,
   },
+});
+
+let previousCartRecordState = store.getState().cart.record;
+
+store.subscribe(() => {
+  const currentCartRecordState = store.getState().cart.record;
+
+  if (currentCartRecordState !== previousCartRecordState) {
+    previousCartRecordState = currentCartRecordState;
+    localStorage.setItem(
+      CART_STORAGE_KEY,
+      JSON.stringify(currentCartRecordState),
+    );
+  }
 });
 
 export type RootState = ReturnType<typeof store.getState>;

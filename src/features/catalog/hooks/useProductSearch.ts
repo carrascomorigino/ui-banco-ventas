@@ -1,10 +1,9 @@
 import { type InputEventHandler } from "react";
 import debounce from "lodash.debounce";
-import type { UseProductSearch } from "../types/product.types";
 import { useAppDispatch } from "../../../app/store";
-import { update } from "../slice/productSearchSlice";
+import { updateTitle } from "../slice/productSearchSlice";
 
-function useProductSearch(): UseProductSearch {
+function useProductSearch() {
   const dispatch = useAppDispatch();
 
   const debounceSearch = debounce(updateStore, 500);
@@ -14,7 +13,7 @@ function useProductSearch(): UseProductSearch {
   };
 
   function updateStore(value: string) {
-    dispatch(update(value));
+    dispatch(updateTitle(value));
   }
 
   return { onSearch };

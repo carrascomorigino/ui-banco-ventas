@@ -1,13 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchProducts } from "../../../api/productsApi";
 import { useAppSelector } from "../../../app/store";
+import useCart from "../../cart/hooks/useCart";
 
 export function ProductList() {
-  const search = useAppSelector((state) => state.productSearch.value);
+  const filter = useAppSelector((state) => state.productSearch.category);
+  const search = useAppSelector((state) => state.productSearch.title);
+  const { addToCart } = useCart();
 
   const { data, isFetching } = useQuery({
-    queryKey: [search],
-    queryFn: async () => await fetchProducts({ search: search }),
+    queryKey: [filter, search],
+    queryFn: async () =>
+      await fetchProducts({ filter: filter, search: search }),
   });
 
   return isFetching ? (
@@ -38,6 +42,12 @@ export function ProductList() {
             {product.price !== undefined && (
               <p className="text-sm text-gray-400">S/ {product.price}</p>
             )}
+            <button
+              onClick={addToCart(product)}
+              className="mt-2 w-28 rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-blue-500"
+            >
+              Agregar
+            </button>
           </div>
         </li>
       ))}
