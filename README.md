@@ -1,75 +1,68 @@
-# React + TypeScript + Vite
+# E-Commerce SPA with Shopping Cart
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación SPA desarrollada con React + Vite para explorar un catálogo de productos y gestionar un carrito de compras interactivo con persistencia local.
 
-Currently, two official plugins are available:
+## 🛠️ Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Core:** React 19+, Vite
+- **Estado Servidor:** React Query (TanStack Query v5)
+- **Estado Local & Persistencia:** Redux Toolkit + LocalStorage API
+- **Estilos:** Tailwind CSS
+- **Testing:** Vitest + React Testing Library
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📐 Decisiones Técnicas
 
-## Expanding the ESLint configuration
+- **Separación Catálogo / Carrito:**
+  - El catálogo opera como una vista de lectura optimizada mediante **React Query**, aprovechando el almacenamiento en caché para evitar re-peticiones innecesarias.
+  - El carrito gestiona sus operaciones de adición, incremento, decremento y eliminación dentro de un slice dedicado de **Redux Toolkit**.
+- **Persistencia en LocalStorage:** El estado del carrito se sincroniza automáticamente con el `localStorage` del navegador. Al iniciar la aplicación, Redux rehidrata el estado inicial desde esta fuente para preservar la sesión del usuario.
+- **Filtros Decoupled:** Los criterios de búsqueda y filtrado por categoría residen en el estado local de Redux, permitiendo reaccionar de forma fluida sin reiniciar las peticiones de React Query innecesariamente.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🔮 Oportunidades de Mejora
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Stepper de cantidad reutilizable:** Actualmente `ProductList` solo ofrece un botón "Agregar" que no refleja si el producto ya está en el carrito ni su cantidad, mientras que `Cart` sí cuenta con controles de incremento/decremento. Una mejora natural sería extraer ese stepper (+/-) en un componente reutilizable y usarlo también en la lista de productos, para que el catálogo muestre en tiempo real la cantidad seleccionada de cada producto sin necesidad de abrir el carrito.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
 
+## 🚀 Instalación y Ejecución
+
+### Requisitos previos
+
+- Node.js (v18 o superior)
+- npm / pnpm / yarn
+
+### Pasos
+
+1. Clonar el repositorio e instalar dependencias:
+
+   ```bash
+   git clone <url-del-repositorio>
+   cd shopping-cart-spa
+   npm install
+
+   ```
+
+2. Iniciar el servidor de desarrollo:
+
+```bash
+   npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+La aplicación quedará disponible en `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3. Ejecutar los tests:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+   npm run test
+```
 
+4. Generar el build de producción y previsualizarlo:
+
+```bash
+   npm run build
+   npm run preview
 ```
