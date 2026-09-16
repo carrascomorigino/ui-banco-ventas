@@ -5,10 +5,11 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import productSearchReducer from "./features/catalog/slice/productSearchSlice";
+import cartReducer from "./features/cart/slice/cartSlice";
 
 export function renderWithProviders(ui: ReactElement, preloadedState?: object) {
   const store = configureStore({
-    reducer: { productSearch: productSearchReducer },
+    reducer: { productSearch: productSearchReducer, cart: cartReducer },
     preloadedState,
   });
 

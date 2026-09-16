@@ -84,6 +84,10 @@ export const selectedItems = createSelector(selectCartState, (cart) =>
   Object.values(cart.record),
 );
 
+export const selectQuantityById =
+  (id: number) => (state: CartRootState) =>
+    state.cart.record[id]?.quantity ?? 0;
+
 export const selectTotal = createSelector(selectCartState, (cart) =>
   Object.values(cart.record).reduce(
     (sum, item) => sum + item.price * item.quantity,
