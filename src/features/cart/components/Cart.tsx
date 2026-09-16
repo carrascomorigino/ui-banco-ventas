@@ -7,6 +7,7 @@ import {
   selectedItems,
   selectTotal,
 } from "../slice/cartSlice";
+import { QuantityStepper } from "./QuantityStepper";
 
 export function Cart() {
   const dispatch = useAppDispatch();
@@ -32,7 +33,7 @@ export function Cart() {
         role="dialog"
         aria-modal="true"
         aria-labelledby="cart-heading"
-        className={`fixed left-0 top-0 z-50 flex h-full w-80 flex-col bg-gray-900 shadow-xl transition-transform duration-300 ${
+        className={`fixed right-0 top-0 z-50 flex h-full w-80 flex-col bg-gray-900 shadow-xl transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -70,27 +71,12 @@ export function Cart() {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={decrementItem(item.id)}
-                      className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-700 text-gray-100 transition hover:bg-gray-600"
-                      aria-label="Disminuir cantidad"
-                    >
-                      −
-                    </button>
-                    <span
-                      aria-live="polite"
-                      className="w-4 text-center text-sm text-gray-100"
-                    >
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={incrementItem(item.id)}
-                      className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-700 text-gray-100 transition hover:bg-gray-600"
-                      aria-label="Aumentar cantidad"
-                    >
-                      +
-                    </button>
+                  <div className="flex items-center">
+                    <QuantityStepper
+                      quantity={item.quantity}
+                      onIncrement={incrementItem(item.id)}
+                      onDecrement={decrementItem(item.id)}
+                    />
                     <button
                       onClick={removeFromCart(item.id)}
                       className="ml-2 text-xs text-red-400 transition hover:text-red-300"

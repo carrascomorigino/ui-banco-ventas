@@ -1,4 +1,5 @@
 import type { Product } from "../features/catalog/types/product.types";
+import { sanitizeSearchInput } from "../features/catalog/utils/searchValidation";
 import MOCK_PRODUCTS from "./mockProducts";
 
 export async function fetchProducts({
@@ -10,7 +11,12 @@ export async function fetchProducts({
 }) {
   return await new Promise<{ products: Array<Product> }>((resolve) =>
     setTimeout(() => {
-      const fixedSearch = search ? search.trim().toLowerCase() : "";
+      // Se vuelve a sanitizar en el límite con la API: cuando esto se
+      // conecte a un backend real, este es el punto donde el término de
+      // búsqueda viajaría en la petición (query param), así que debe
+      // quedar validado sin importar quién invoque a fetchProducts.
+      const sanitizedSearch = sanitizeSearchInput(search);
+      const fixedSearch = sanitizedSearch ? sanitizedSearch.toLowerCase() : "";
 
       return resolve({
         products: fixedSearch
